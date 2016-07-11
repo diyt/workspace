@@ -54,6 +54,7 @@ let g:SuperTabLongestHighlight = 1
 set incsearch
 set ignorecase
 set smartcase
+set hlsearch
 
 "" Enable rainbow braces
 "au VimEnter * RainbowParenthesesToggle
