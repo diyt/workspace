@@ -1,0 +1,194 @@
+<html>
+<head>
+<title> Basketball Roster </title>
+<script src="https://unpkg.com/vue"></script>
+<link rel="stylesheet" type="text/css" href="./bballStyle.css">
+</head>
+
+<body>
+  <div id="main-app">
+    <h1> Roster </h1>
+    <table id="roster-table">
+      <thead>
+        <tr>
+          <th> Name </th>
+          <th> Number </th>
+          <th> Position </th>
+          <th> Fouls </th>
+          <th> Turnonvers </th>
+          <th> Blocks </th>
+          <th> Steals </th>
+          <th> Rebound </th>
+          <th> Assists </th>
+          <th> Points </th>
+          <!-- <th> Remove Player </th> -->
+        </tr>
+      </thead>
+      <tbody>
+        <tr is="player-row" v-for="player in playerList" v-bind:player="player"></tr>
+      </tbody>
+    </table>
+
+    <br/> <br/>
+    <div id="add-player">
+      <b> Name: </b>
+      <input type="text" v-model.trim="newPlayer.name" placeholder="Enter player name">
+      <br/> <b> Number: </b>
+      <input type="text" v-model.number="newPlayer.number" placeholder="Enter player number">
+      <br/> <b> Position: </b>
+      <select v-model.trim="newPlayer.position">
+        <option> PG </option>
+        <option> SG </option>
+        <option> SF </option>
+        <option> PF </option>
+        <option> C </option>
+      </select>
+      <button v-on:click="addPlayer"> Add Player </button>
+    </div>
+
+    <br/><br/>
+    <div id="team-stats">
+    <b> Team Statistics </b>
+    <div>Points: {{teamStats.points}}</div>
+    <div>Assists: {{teamStats.assists}}</div>
+    <div>Rebounds: {{teamStats.rebounds}}</div>
+    <div>Fouls: {{teamStats.fouls}}</div>
+    </div>
+  </div>
+</body>
+
+<script>
+  // Component for statistic edit block
+  Vue.component( 'stats-block', {
+  	props: ['stats'],
+  	template: '<td><table>\
+  						 <tr><td rowspan="2">{{this.stats.value}}</td><td><button @click="add">+</button></td></tr>\
+  						 <tr><td><button @click="minus">-</button></td></tr>\
+  	           </table></td>',
+  	methods: {
+  		add: function() {
+  			this.$emit('increment');
+  		},
+  		minus: function() {
+  			this.$emit('decrement');
+  		}
+  	}
+  })
+
+  // Component for each row in player roster table
+  Vue.component('player-row', {
+  	props: ['player'],
+  	template: '<tr>\
+        <td> {{ player.name }} </td>\
+        <td> {{ player.number }} </td>\
+        <td> {{ player.position }} </td>\
+        <td is="stats-block" :stats=player.fouls\
+            v-on:increment="increment(player.fouls)"\
+            v-on:decrement="decrement(player.fouls)"></td>\
+        <td is="stats-block" :stats=player.turnovers\
+            v-on:increment="increment(player.turnovers)"\
+            v-on:decrement="decrement(player.turnovers)"></td>\
+        <td is="stats-block" :stats=player.blocks\
+            v-on:increment="increment(player.blocks)"\
+            v-on:decrement="decrement(player.blocks)"></td>\
+        <td is="stats-block" :stats=player.steals\
+            v-on:increment="increment(player.steals)"\
+            v-on:decrement="decrement(player.steals)"></td>\
+        <td is="stats-block" :stats=player.rebounds\
+            v-on:increment="increment(player.rebounds)"\
+            v-on:decrement="decrement(player.rebounds)"></td>\
+        <td is="stats-block" :stats=player.assists\
+            v-on:increment="increment(player.assists)"\
+            v-on:decrement="decrement(player.assists)"></td>\
+        <td is="stats-block" :stats=player.points\
+            v-on:increment="increment(player.points)"\
+            v-on:decrement="decrement(player.points)"></td>\
+      </tr>',
+    methods: {
+    	increment: function(stats) {
+    		if(stats.value < stats.max) {
+    			stats.value++;
+    		}
+    	},
+    	decrement: function(stats) {
+    		if(stats.value > stats.min) {
+    			stats.value--;
+    		}
+    	}
+    }
+  })
+
+  // The Vue instance for the main page
+  var mainApp = new Vue({
+    el: '#main-app',
+    data: {
+    	playerList: [],
+    	newPlayer: {
+    		name: "",
+	  		number: undefined,
+	  		position: ""
+    	}
+    },
+    computed: {
+    	teamStats: function() {
+  			var teamPoints = 0, teamFouls = 0, teamAssists = 0, teamRebounds = 0;
+  			for(var i in this.playerList) {
+  				var player = this.playerList[i];
+  				teamPoints += player.points.value;
+  				teamFouls += player.fouls.value;
+  				teamAssists += player.assists.value;
+  				teamRebounds += player.rebounds.value;
+  			}
+  			return {
+  				points: teamPoints,
+  				assists: teamAssists,
+  				rebounds: teamRebounds,
+  				fouls: teamFouls
+  			}
+    	}
+    },
+    methods: {
+    	addPlayer: function() {
+  			// All fields has to be filled
+  			if ( this.newPlayer.name.trim() === "" || 
+  				   this.newPlayer.position === "" || 
+  				   this.newPlayer.number === undefined) {
+  				alert("Please enter all required information for the player!");
+  				return;
+  			}
+
+  			// Player nubmer has to be valid
+  			var inputNumber = parseInt(this.newPlayer.number);
+  			if ( isNaN(inputNumber) || inputNumber < 0 || inputNumber > 99 ) {
+  				alert("Player number has to be valid(0-99)");
+  				return;
+  			}
+
+  			// Player class
+  			var Player = {
+			  	createNew: function(name, number, position) {
+			  		var player = {};
+			  		player.name = name;
+			  		player.number = number;
+			  		player.position = position;
+			  		player.fouls = {value: 0, max: 6, min: 0};
+			  		player.turnovers = {value: 0, max: 6, min: 0};
+			  		player.blocks = {value: 0, max: Number.MAX_VALUE, min: 0};
+			  		player.steals = {value: 0, max: Number.MAX_VALUE, min: 0};
+			  		player.rebounds = {value: 0, max: Number.MAX_VALUE, min: 0};
+			  		player.assists = {value: 0, max: Number.MAX_VALUE, min: 0};
+			  		player.points = {value: 0, max: Number.MAX_VALUE, min: 0};
+			      return player;
+			  	}
+			  }
+
+        var playerAdded = Player.createNew(this.newPlayer.name, this.newPlayer.number, this.newPlayer.position);
+        this.playerList.push(playerAdded);
+        this.newPlayer.name = "";
+        this.newPlayer.number = undefined;
+        this.newPlayer.position = "";
+  		}
+    }
+  })
+</script>
+</html>

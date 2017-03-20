@@ -1,0 +1,6 @@
+#roster-table th, td {
+	width: 100px;
+	text-align: center;
+	border: 1px solid;
+	border-collapse: collapse;
+}
