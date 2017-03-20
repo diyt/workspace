@@ -1,0 +1,144 @@
+<html>
+
+<head>
+<script src="https://unpkg.com/vue"></script>
+</head>
+
+
+<body>
+
+<!-- The first app: binding content -->
+<div id="app">
+  <b> binding content </b> <br/>
+  {{ message }}
+</div>
+
+
+<!-- The second app: binding attribute -->
+<div id="app-2">
+  <br/><br/>  <b> binding attribute </b>  <br/>
+  <span v-bind:title="message">
+    Hover your mouse over me for a few seconds to see my dynamically bound title!
+  </span>
+</div>
+
+
+<!-- The third app: If-Else control -->
+<div id="app-3">
+  <br/><br/>  <b> If-Else control </b>  <br/>
+  <p v-if="display"> Now you see me </p>
+  <button v-on:click="toggleDisplay"> 
+    <div v-if="display"> Hide text </div>
+    <div v-else> Show text </div>
+  </button>
+</div>
+
+
+<!-- The fourth app: For loop -->
+<div id="app-4">
+  <br/><br/>  <b> For loop </b>  <br/>
+  <ol>
+    <li v-for="(todo, index) in todos">
+    	{{ todo.text }}
+      <button v-on:click="removeRow(index)"> Remove </button>
+    </li>
+  </ol>
+  <br/>
+  <!-- v-model can give you two-way binding -->
+  <input type="text" v-model="placeHolder" v-on:keyup.enter="addRow">
+  <button v-on:click="addRow"> Add row </button>
+</div>
+
+
+<!-- The fifth app: Components -->
+<div id="app-5">
+  <br/><br/>  <b> Components </b>  <br/>
+  <ol>
+    <todo-item v-for="item in itemList" v-bind:todo="item"></todo-item>
+  </ol>
+</div>
+
+
+
+<script>
+
+  var app = new Vue({
+	  el: '#app',
+	  data: {
+	    message: 'Hi! Nice to meet you:)'
+	  }
+	});
+
+  var app2 = new Vue({
+  	el: '#app-2',
+  	data: {
+  		message: 'The current time is: ' + new Date()
+  	}
+  });
+
+  var app3 = new Vue({
+  	el: "#app-3",
+  	data: {
+  		display: true
+  	},
+  	methods: {
+  		toggleDisplay: function() {
+          this.$data.display = !this.$data.display;
+  		}
+  	}
+  });
+
+  var app4 = new Vue({
+  	el: '#app-4',
+  	data: {
+  		todos: [
+        { text: "I am the first!" },
+        { text: "I am the second!" },
+        { text: "I am the third!" },
+        { text: "I am the fourth!" },
+  		],
+      placeHolder: ""
+  	},
+    methods: {
+      addRow: function() {
+        if (this.$data.placeHolder === "") {
+          alert("The text cannot be empty!");
+          return;
+        }
+        this.$data.todos.push({ text: this.$data.placeHolder, id: this.$data.todos.length });
+        this.$data.placeHolder = "";
+        app3.$data.display = !app3.$data.display;
+      },
+      removeRow: function(index) {
+        this.$data.todos.splice(index, 1);
+      }
+    }
+  });
+
+
+  Vue.component( 'todo-item', {
+    props: ['todo'],
+    template: '<li>{{ todo.text }}</li>'
+  });
+
+  var app5 = new Vue({
+    el: "#app-5",
+    data: {
+      itemList: [
+        { text: "Wake up!"},
+        { text: "Brush teeth" },
+        { text: "Eat breakfast" }
+      ]
+    }
+  });
+
+  
+
+
+
+
+
+</script>
+
+</body>
+</html>
