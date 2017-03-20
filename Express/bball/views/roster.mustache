@@ -1,0 +1,25 @@
+<!-- Templates for bball roster page -->
+
+<h1>
+  {{title}}
+</h1>
+
+<p>
+  <table>
+    <tr>
+      <th> Name </th>
+      <th> Number </th>
+      <th> Position </th>
+    </tr>
+    {{#players}}
+    <tr>
+      <td> {{name}} </td>
+      <td> {{number}} </td>
+      <td> {{position}} </td>
+    </tr>
+    {{/players}}
+  </table>
+</p>
+
+<br>
+<a href="/"> Back to home page </a>

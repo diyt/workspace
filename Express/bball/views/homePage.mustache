@@ -1,0 +1,72 @@
+<html>
+
+<head>
+<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js">
+</script>
+</head> 
+
+<body>
+<!-- Templates for bball home page -->
+
+<h1>
+  {{title}}
+</h1>
+
+<div class='addPlayerBox'>
+  <table>
+    <caption><b>Add Player </b></caption>
+    <tr>
+      <td>Name: </td>
+      <td><input id='playerName' type='text'></td>
+    </tr>
+    <tr>
+      <td>Number: </td>
+      <td><input id='playerNumber' type='number' min=0 max=999 ></td>
+    </tr>
+    <tr>
+      <td>Position: </td>
+      <td><input id='playerPosition' type='text'></td>
+    </tr>
+  </table>
+  <br>
+  <button type='button' id='addPlayerBtn' onclick='addPlayer()'>
+    Submit
+  </button>
+</div>
+
+<br><br>
+
+<a href='/roster'> Roster </a>
+
+<script>
+    function addPlayer(){
+      var playerName = $('#playerName').val();
+      var playerNumber = $('#playerNumber').val();
+      var playerPosition = $('#playerPosition').val();
+
+      if (playerName === '' || playerPosition === '' || playerNumber === '') {
+        alert("All fields must be filled!");
+        return;
+      }
+
+      var newPlayer = {
+          name: playerName,
+          number: playerNumber,
+          position: playerPosition
+      };
+    
+      $.post(
+            "/addPlayer",
+            newPlayer,
+            function(data,status){
+                if(status === 'success') {
+                	window.location.replace("/roster");
+                }
+            }
+      );
+    };
+
+</script>
+
+</body>
+</html>
