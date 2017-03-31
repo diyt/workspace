@@ -1,6 +1,16 @@
+#roster-table {
+	border-collapse: collapse;
+}
+
 #roster-table th, td {
 	width: 100px;
 	text-align: center;
 	border: 1px solid;
 	border-collapse: collapse;
+}
+
+#stats-block-table {
+	border-collapse: collapse;
+	margin: -1px;
+	border: hidden;
 }

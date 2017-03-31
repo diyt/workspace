@@ -61,7 +61,7 @@
   // Component for statistic edit block
   Vue.component( 'stats-block', {
   	props: ['stats'],
-  	template: '<td><table>\
+  	template: '<td><table id="stats-block-table">\
   						 <tr><td rowspan="2">{{this.stats.value}}</td><td><button @click="add">+</button></td></tr>\
   						 <tr><td><button @click="minus">-</button></td></tr>\
   	           </table></td>',
