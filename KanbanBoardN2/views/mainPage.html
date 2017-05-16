@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <script src="https://unpkg.com/vue"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="/js/mainPage.js"></script>
+</head>
+<body>
+    <div>
+        <div class="main-page-title row">
+            <h2 class="col-md-12"> Kanban board<h2>
+        </div>
+    </div>
+
+    <div class="container-fluid" id="mainapp">
+
+        <!-- Trigger the modal with a button --><!-- The first app: binding content -->
+        <div class="new-board-button-link row">
+            <button class="btn btn-primary pull-right" data-toggle="modal" data-target="#add-project-modal" > + New Project </button>
+        </div>
+
+        <div id="existBoard" v-for="project in projects">
+            <a id="new-project-name" :href="project.link" v-html="project.title"  style="float: left;  width:30%;"></a>
+        </div>
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="add-project-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Create new project</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <label for="usr" id="name">Name:</label>
+                <input type="text" class="form-control" id="usr" v-model.trim="newProjectName" @keyup.enter="submit">
+              </div>
+              <div class="modal-footer">
+                <button class="btn btn-info" @click="submit" style="float: left" data-dismiss="modal">Submit</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+    </div>
+</body>
+
+
+<link href="/css/mainPage.css" rel="stylesheet">
+</html>

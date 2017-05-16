@@ -1,0 +1,46 @@
+<html>
+<head>
+  <title id='project-title'> {{title}} </title>
+  
+  <!-- Load jQuery -->
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"
+    integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+    crossorigin="anonymous"></script>
+
+  <!-- Load Bootstrap assets -->
+  <link rel="stylesheet"  href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+</head>
+
+<body>
+	<div id="project-log-history" class="container-fluid">
+ 		<div class="project-title-row row"> 
+ 		  <h2 class="col-md-12"> {{title}} <h2>
+ 		</div>
+
+ 		<div class="top-nav row"> 
+	    <div class="col-md-12">
+		    <ul class="nav nav-tabs">
+		      <li class="active"><a href="#">Home</a></li>
+		      <li class="active"><a href="#">Audit History</a></li>
+		    </ul>
+		  </div>
+		</div>
+	  
+		<div class="center-content row">
+		  <div v-for="value in log">
+			  <p>{{value}}</p>
+		  </div>
+		</div>
+
+	</div>
+
+
+  <!-- Local Vue.js file -->
+  <script src="https://unpkg.com/vue"></script>
+  <script src="/js/projectDetails.js"></script>
+  
+</body>
+
+</html>
